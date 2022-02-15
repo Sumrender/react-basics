@@ -1,0 +1,161 @@
+1st part
+------------------------------------------------------------------
+import React, { useState } from 'react';
+import './App.css';
+
+function countInitial(){
+  console.log("useState called");
+  return 0;
+}
+
+function App() {
+
+  // const [count, setCount] = useState(countInitial());
+  // called many times  
+  // say instead of 0 we have some complex value which is called 
+  // from a function, then it will be called again and again
+  // which may slow down your processes.
+  // for that we may, pass a function, then it will run only once.
+  const [count, setCount] = useState(() => countInitial());
+  function decCount(){
+    // setCount(count - 1);
+    // setCount(count - 1); // even if I am calling it twice, it is
+    // updated only once. Why, bcz I am passing count to below one
+        
+    setCount((prevCount)=> prevCount - 1);
+    // setCount((prevCount)=> prevCount - 1);
+    // now, it will update twice, if I comment out above statement
+  }
+  
+  function incCount(){
+    setCount((prevCount)=> prevCount + 1);    
+  }
+
+  return (
+    <>
+      <button onClick={decCount}>-</button>
+      <span>{count}</span>
+      <button onClick={incCount}>+</button>
+
+    </>
+  );
+}
+
+export default App;
+------------------------------------------------------------------
+2nd part
+------------------------------------------------------------------
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  
+  const [state, setState] = useState({count:4, color:"blue"});
+
+  // function decCount(){       
+  //   setState((prevState)=> {
+  //     console.log(prevState);      
+  //      return {count: prevState.count - 1}});       
+  // }
+  // if I am doing this, output is not: 3blue
+  // instead it is, 3 only, that is bcz is
+  // to see 3blue, I also need to pass old values as seen below
+  function decCount(){       
+    setState((prevState)=> {
+      console.log(prevState);      
+       return {...prevState, count: prevState.count - 1}});       
+  }
+  // but i can also make two useState variables, theme and count
+  // instead of using one only, it is upto me
+  
+  function incCount(){
+    setState((prevState)=> {return {count: prevState.count + 1};});    
+  }
+
+  return (
+    <>
+      <button onClick={decCount}>-</button>
+      <span>{state.count}{state.color}</span>      
+      <button onClick={incCount}>+</button>
+
+    </>
+  );
+}
+
+export default App;
+------------------------------------------------------------------
+3rd part
+------------------------------------------------------------------
+import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
+
+function CreateArea(props) {
+  const [isExpanded, setExpanded] = useState(false);
+
+  const [note, setNote] = useState({
+    title: "",
+    content: ""
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setNote(prevNote => {
+      return {
+        ...prevNote,
+        [name]: value  // this is important, to note...
+        // this function is doing the work for two variables
+        // title and content, to prevent js to consider 
+        // name:value as an object and to make sure that
+        // name gets its value updated [name] is written 
+        // like this
+      };
+    });
+  }
+
+  function submitNote(event) {
+    props.onAdd(note);
+    setNote({
+      title: "",
+      content: ""
+    });
+    event.preventDefault();
+  }
+
+  function expand() {
+    setExpanded(true);
+  }
+
+  return (
+    <div>
+      <form className="create-note">
+        {isExpanded && (
+          <input
+            name="title"
+            onChange={handleChange}
+            value={note.title}
+            placeholder="Title"
+          />
+        )}
+
+        <textarea
+          name="content"
+          onClick={expand}
+          onChange={handleChange}
+          value={note.content}
+          placeholder="Take a note..."
+          rows={isExpanded ? 3 : 1}
+        />
+        <Zoom in={isExpanded}>
+          <Fab onClick={submitNote}>
+            <AddIcon />
+          </Fab>
+        </Zoom>
+      </form>
+    </div>
+  );
+}
+
+export default CreateArea;
