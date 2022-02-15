@@ -1,0 +1,51 @@
+.header {
+  padding-left: 10px;
+  height: 9vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-style: italic;
+  border-bottom: 2px solid black;
+}
+
+.site-name {
+  background-color: red;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.site-name:hover {
+  outline: 1px solid red;
+  background-color: white;
+  color: red;
+}
+
+.header button {
+  border-radius: 5%;
+  outline: 1px solid white;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.links {
+  display: flexbox;
+}
+/* links pr kaam krna hai, they are not responsive */
+.link {
+  margin: 30px;
+  background-color: rgb(0, 170, 255);
+  font-size: 1.2rem;
+}
+
+.link:hover {
+  outline: 1px solid rgb(0, 170, 255);
+  background-color: white;
+  color: rgb(0, 170, 255);
+}
+
+.link:last-child {
+  margin-right: 200px;
+}
